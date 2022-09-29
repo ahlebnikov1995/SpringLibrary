@@ -1,16 +1,30 @@
 package com.example.homework2.controller;
 
+import com.example.homework2.models.Author;
+import com.example.homework2.models.dto.AuthorDto;
 import com.example.homework2.service.ServiceAuthorI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
 @AllArgsConstructor
 public class ControllerAuthorC implements ControllerAuthorI{
     private ServiceAuthorI service;
 
+
     @Override
-    public void findAll() {
-        service.findAll().forEach(author -> System.out.println(author.getId() + ". " + author.getName()));
+    @GetMapping("/authors")
+    public List<AuthorDto> findAll() {
+       List<Author> authors =  service.findAll();
+       List<AuthorDto> dtos = new ArrayList<>();
+        for (int i = 0; i < authors.size(); i++) {
+            dtos.add(AuthorDto.toDto(authors.get(i)));
+        }
+       return dtos;
     }
 }

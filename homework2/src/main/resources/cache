@@ -1,5 +1,0 @@
-Book(id=1, name=ночь, author=Author(id=1, name=артём), genre=Genre(id=1, name=хорор))
-Book(id=2, name=ночь, author=Author(id=2, name=роман), genre=Genre(id=2, name=роман))
-Book(id=3, name=ночь, author=Author(id=1, name=артём), genre=Genre(id=2, name=роман))
-Book(id=4, name=день, author=Author(id=3, name=илюша), genre=Genre(id=3, name=комедия))
-Book(id=5, name=ночь, author=Author(id=4, name=вова), genre=Genre(id=1, name=хорор))

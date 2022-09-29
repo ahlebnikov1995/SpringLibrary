@@ -8,10 +8,7 @@ import com.example.homework2.service.ServiceBookI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +20,9 @@ public class ControllerBookC implements ControllerBookI {
 
     private ServiceBookI service;
 
-    @Transactional(readOnly = true)
+
     @Override
-    @GetMapping("/find/{name}")
+    @GetMapping("/books/{name}")
     public List<BookDto> find(@PathVariable String name) {
        List<Book> books = service.findByName(name);
        List<BookDto> booksDto = new ArrayList<>();
@@ -36,7 +33,7 @@ public class ControllerBookC implements ControllerBookI {
     }
 
     @Override
-    @GetMapping("/findSort/{name}")
+    @GetMapping("/books/sort/{name}")
     public List<BookDto> finds(@PathVariable String name) {
         List<Book> books = service.findByNameAndSort(name);
         List<BookDto> booksDto = new ArrayList<>();
@@ -48,16 +45,16 @@ public class ControllerBookC implements ControllerBookI {
 
 
     @Override
-    @GetMapping("/add/{name}/{a}/{g}")
+    @GetMapping("/add/book/{name}/{a}/{g}")
     public void add(@PathVariable String name, @PathVariable String a, @PathVariable String g) {
-        Author author = new Author(a);
-        Genre genre = new Genre(g);
-        service.addBook(new Book(name, author, genre));
+        Author author = Author.builder().name(a).build();
+        Genre genre = Genre.builder().name(g).build();
+        service.addBook(Book.builder().name(name).author(author).genre(genre).build());
     }
 
 
     @Override
-    @GetMapping("/findAll")
+    @GetMapping("/books")
     public List<BookDto> findAllBooks() {
         List<BookDto> books = new ArrayList<>();
         List<Book> books1 = service.findAllBook();
@@ -69,7 +66,7 @@ public class ControllerBookC implements ControllerBookI {
 
 
     @Override
-    @GetMapping("/findAllBA/{a}")
+    @GetMapping("/books/ByAuthor/{a}")
     public List<BookDto> findAllByAuthor(@PathVariable String a) {
         List<BookDto> books = new ArrayList<>();
         List<Book> books1 = service.findAllByAuthor(a);
@@ -81,7 +78,7 @@ public class ControllerBookC implements ControllerBookI {
 
 
     @Override
-    @GetMapping("/findAllBG/{g}")
+    @GetMapping("/books/ByGenre/{g}")
     public List<BookDto> findAllByGenre(@PathVariable String g) {
         List<BookDto> books = new ArrayList<>();
         List<Book> books1 = service.findAllByGenre(g);
@@ -92,10 +89,10 @@ public class ControllerBookC implements ControllerBookI {
     }
 
     @Override
-    @GetMapping("/delete/{id}/{name}/{a}/{g}")
+    @GetMapping("/delete/book/{id}/{name}/{a}/{g}")
     public void deleteBook(@PathVariable Long id, @PathVariable String name, @PathVariable String a, @PathVariable String g) {
-        Author author = new Author(a);
-        Genre genre = new Genre(g);
-        service.deleteBook(new Book(id,name,author,genre));
+        Author author = Author.builder().name(a).build();
+        Genre genre = Genre.builder().name(g).build();
+        service.deleteBook(Book.builder().id(id).name(name).author(author).genre(genre).build());
     }
 }

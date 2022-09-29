@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface DaoBook extends JpaRepository<Book,Long> {
 
+    Book findById(long id);
 
     List<Book> findByName(String name);
 

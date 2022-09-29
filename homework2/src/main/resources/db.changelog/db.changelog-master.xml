@@ -10,6 +10,7 @@
     <include file="db.changelog/1.0/author-table.xml"/>
     <include file="db.changelog/1.0/genre-table.xml"/>
     <include file="db.changelog/1.0/book-table.xml"/>
+    <include file="db.changelog/1.0/comments-table.xml"/>
 
     <include file="db.changelog/data/author-data.xml"/>
     <include file="db.changelog/data/genre-data.xml"/>

@@ -1,9 +1,6 @@
 package com.example.homework2.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,13 +8,10 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "author")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Author {
-
-    public Author(String name) {
-        this.name = name;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
