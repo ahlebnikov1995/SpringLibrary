@@ -17,9 +17,12 @@ public class ServiceCommentsC implements ServiceCommentsI {
 
     @Transactional
     @Override
-    public void addComment(String value, long bid) {
+    public Comments addComment(String value, long bid) {
         Book book = daoBook.getById(bid);
-        book.getComments().add(Comments.builder().value(value).build());
+        Comments comments = Comments.builder().value(value).build();
+        dao.saveAndFlush(comments);
+        book.getComments().add(comments);
         daoBook.saveAndFlush(book);
+        return comments;
     }
 }

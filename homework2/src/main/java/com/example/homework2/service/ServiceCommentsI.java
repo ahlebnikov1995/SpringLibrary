@@ -1,7 +1,8 @@
 package com.example.homework2.service;
 
 import com.example.homework2.models.Book;
+import com.example.homework2.models.Comments;
 
 public interface ServiceCommentsI {
-    void addComment(String value, long id);
+    Comments addComment(String value, long id);
 }

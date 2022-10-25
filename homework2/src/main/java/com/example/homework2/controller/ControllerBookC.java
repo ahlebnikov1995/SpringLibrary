@@ -45,11 +45,13 @@ public class ControllerBookC implements ControllerBookI {
 
 
     @Override
-    @GetMapping("/add/book/{name}/{a}/{g}")
-    public void add(@PathVariable String name, @PathVariable String a, @PathVariable String g) {
+    @PostMapping("/book/{name}/{a}/{g}")
+    public Book add(@PathVariable String name, @PathVariable String a, @PathVariable String g) {
         Author author = Author.builder().name(a).build();
         Genre genre = Genre.builder().name(g).build();
-        service.addBook(Book.builder().name(name).author(author).genre(genre).build());
+        Book book = Book.builder().name(name).author(author).genre(genre).build();
+        service.addBook(book);
+        return book;
     }
 
 
@@ -89,10 +91,18 @@ public class ControllerBookC implements ControllerBookI {
     }
 
     @Override
-    @GetMapping("/delete/book/{id}/{name}/{a}/{g}")
-    public void deleteBook(@PathVariable Long id, @PathVariable String name, @PathVariable String a, @PathVariable String g) {
+    @DeleteMapping("/book/{id}/{name}/{a}/{g}")
+    public Book deleteBook(@PathVariable Long id, @PathVariable String name, @PathVariable String a, @PathVariable String g) {
         Author author = Author.builder().name(a).build();
         Genre genre = Genre.builder().name(g).build();
-        service.deleteBook(Book.builder().id(id).name(name).author(author).genre(genre).build());
+        Book book = Book.builder().id(id).name(name).author(author).genre(genre).build();
+        service.deleteBook(book);
+        return book;
+    }
+
+    @Override
+    @PutMapping("/book")
+    public BookDto updateBook(@RequestBody Book book) {
+        return BookDto.toDto(service.updateBook(book));
     }
 }

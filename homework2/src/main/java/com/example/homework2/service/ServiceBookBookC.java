@@ -58,6 +58,7 @@ public class ServiceBookBookC implements ServiceBookI {
             book.setGenre(genres.get(0));
         }
         daoBook.saveAndFlush(book);
+
     }
 
 
@@ -102,6 +103,34 @@ public class ServiceBookBookC implements ServiceBookI {
             }
         }
         }
+    }
+
+    @Override
+    public Book updateBook(Book book) {
+       Book book1 = daoBook.findById(book.getId());
+       book1.setName(book.getName());
+
+
+        Author author = book.getAuthor();
+        if(daoAuthor.findByName(book.getAuthor().getName()).size() == 0){
+            author = Author.builder().name(book.getAuthor().getName()).build();
+        }
+        if(daoAuthor.findByName(book.getAuthor().getName()).size() != 0){
+            author = Author.builder().id(daoAuthor.findByName(book.getAuthor().getName()).get(0).getId()).name(book.getAuthor().getName()).build();
+        }
+
+
+        Genre genre = book.getGenre();
+        if(daoGenre.findByName(book.getGenre().getName()).size() == 0){
+            genre = Genre.builder().name(book.getGenre().getName()).build();
+        }
+        if(daoGenre.findByName(book.getGenre().getName()).size() != 0){
+            genre = Genre.builder().id(daoGenre.findByName(book.getGenre().getName()).get(0).getId()).name(book.getGenre().getName()).build();
+        }
+       book1.setAuthor(author);
+       book1.setGenre(genre);
+       daoBook.saveAndFlush(book1);
+       return book1;
     }
 
 

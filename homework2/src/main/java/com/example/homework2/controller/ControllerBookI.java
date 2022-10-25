@@ -8,9 +8,10 @@ import java.util.List;
 public interface ControllerBookI {
     List<BookDto> find(String name);
     List<BookDto> finds(String name);
-    void add(String name, String a, String g);
+    Book add(String name, String a, String g);
     List<BookDto> findAllBooks();
     List<BookDto> findAllByAuthor(String author);
     List<BookDto> findAllByGenre(String genre);
-    void deleteBook(Long id, String name, String a, String g);
+    Book deleteBook(Long id, String name, String a, String g);
+    BookDto updateBook(Book book);
 }
