@@ -1,5 +1,5 @@
-id;name
-;артём
-;роман
-;илюша
-;вова
+id;name;password
+;артём;$2a$12$yjms3AVIxY66dIqYAPLlP.JcmGogBDVi5nh3Uprpbm0ijQ2ddibly
+;роман;$2a$12$yjms3AVIxY66dIqYAPLlP.JcmGogBDVi5nh3Uprpbm0ijQ2ddibly
+;илюша;$2a$12$yjms3AVIxY66dIqYAPLlP.JcmGogBDVi5nh3Uprpbm0ijQ2ddibly
+;вова;$2a$12$yjms3AVIxY66dIqYAPLlP.JcmGogBDVi5nh3Uprpbm0ijQ2ddibly

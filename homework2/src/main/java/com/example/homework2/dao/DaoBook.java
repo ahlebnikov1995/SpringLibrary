@@ -14,17 +14,16 @@ public interface DaoBook extends JpaRepository<Book,Long> {
 
     List<Book> findByName(String name);
 
-
     List<Book> findByAuthorName(String name);
-
 
     List<Book> findByGenreName(String name);
 
     @EntityGraph("book_graph")
     List<Book> findAll();
 
-
     List<Book> findByIdAndNameAndAuthor_idAndGenre_id(long id, String name, long aid, long gid);
+
+    void deleteByIdAndAuthor_id(long id, long aid);
 
 
 

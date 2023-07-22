@@ -14,8 +14,14 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static javafx.scene.input.KeyCode.T;
 
 
 @Service
@@ -27,10 +33,18 @@ public class ServiceBookBookC implements ServiceBookI {
     private DaoGenre daoGenre;
     private DaoComments daoComments;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional(readOnly = true)
     @Override
     public List<Book> findByName(String name) {
         return daoBook.findByName(name);
+    }
+
+    @Override
+    public Book findById(long id) {
+        return daoBook.findById(id);
     }
 
     @Transactional(readOnly = true)
@@ -49,13 +63,11 @@ public class ServiceBookBookC implements ServiceBookI {
     @Transactional
     @Override
     public void addBook(Book book) {
-        List<Author> authors = daoAuthor.findByName(book.getAuthor().getName());
-        if(authors.size() != 0){
-            book.setAuthor(authors.get(0));
-        }
-        List<Genre> genres = daoGenre.findByName(book.getGenre().getName());
-        if(genres.size() != 0){
-            book.setGenre(genres.get(0));
+        try {
+            Optional<Genre> result = Optional.ofNullable(daoGenre.findByName(book.getGenre().getName()));
+            book.setGenre(result.get());
+        }catch (NoSuchElementException e){
+
         }
         daoBook.saveAndFlush(book);
 
@@ -81,54 +93,27 @@ public class ServiceBookBookC implements ServiceBookI {
 
     @Transactional
     @Override
-    public void deleteBook(Book book) {
-        List<Author> authors = daoAuthor.findByName(book.getAuthor().getName());
-        List<Genre> genres = daoGenre.findByName(book.getGenre().getName());
-        if(authors.size()!=0 && genres.size()!=0){
-        long aid = daoAuthor.findByName(book.getAuthor().getName()).get(0).getId();
-        long gid = daoGenre.findByName(book.getGenre().getName()).get(0).getId();
-        if(daoBook.findByIdAndNameAndAuthor_idAndGenre_id(book.getId(),book.getName(),aid,gid).size() != 0) {
-            List<Comments> comments = daoBook.findById(book.getId()).getComments();;
-            for (int i = 0; i < comments.size(); i++) {
-                daoComments.delete(comments.get(i));
-            }
-
-            daoBook.delete(book);
-
-            if(daoBook.findByAuthorName(book.getAuthor().getName()).size() == 0){
-                daoAuthor.delete(daoAuthor.findByName(book.getAuthor().getName()).get(0));
-            }
-            if(daoBook.findByGenreName(book.getGenre().getName()).size() == 0){
-                daoGenre.delete(daoGenre.findByName(book.getGenre().getName()).get(0));
-            }
+    public Book deleteBook(long id, long aid) {
+        Book book = daoBook.findById(id);
+        daoBook.deleteByIdAndAuthor_id(id, aid);
+        return book;
         }
-        }
-    }
 
+
+    @Transactional
     @Override
     public Book updateBook(Book book) {
        Book book1 = daoBook.findById(book.getId());
        book1.setName(book.getName());
 
 
-        Author author = book.getAuthor();
-        if(daoAuthor.findByName(book.getAuthor().getName()).size() == 0){
-            author = Author.builder().name(book.getAuthor().getName()).build();
-        }
-        if(daoAuthor.findByName(book.getAuthor().getName()).size() != 0){
-            author = Author.builder().id(daoAuthor.findByName(book.getAuthor().getName()).get(0).getId()).name(book.getAuthor().getName()).build();
-        }
+       try {
+           Optional<Genre> result = Optional.ofNullable(daoGenre.findByName(book.getGenre().getName()));
+           book1.setGenre(result.get());
+       }catch (NoSuchElementException e){
+           book1.setGenre(Genre.builder().name(book.getGenre().getName()).build());
+       }
 
-
-        Genre genre = book.getGenre();
-        if(daoGenre.findByName(book.getGenre().getName()).size() == 0){
-            genre = Genre.builder().name(book.getGenre().getName()).build();
-        }
-        if(daoGenre.findByName(book.getGenre().getName()).size() != 0){
-            genre = Genre.builder().id(daoGenre.findByName(book.getGenre().getName()).get(0).getId()).name(book.getGenre().getName()).build();
-        }
-       book1.setAuthor(author);
-       book1.setGenre(genre);
        daoBook.saveAndFlush(book1);
        return book1;
     }

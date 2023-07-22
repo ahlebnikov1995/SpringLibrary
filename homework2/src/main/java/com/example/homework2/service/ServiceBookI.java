@@ -9,12 +9,13 @@ import java.util.List;
 
 public interface ServiceBookI {
     List<Book> findByName(String name);
+    Book findById(long id);
     public List<Book> findByNameAndSort(String name);
     void addBook(Book book);
     List<Book> findAllBook();
     List<Book> findAllByAuthor(String name);
     List<Book> findAllByGenre(String name);
-    void deleteBook(Book book);
+    Book deleteBook(long id, long aid);
     Book updateBook(Book book);
 
 }

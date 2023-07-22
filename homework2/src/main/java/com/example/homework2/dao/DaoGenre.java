@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface DaoGenre extends JpaRepository<Genre,Long> {
 
-   List<Genre> findByName(String name);
+   Genre findById(long id);
+
+   Genre findByName(String name);
 }

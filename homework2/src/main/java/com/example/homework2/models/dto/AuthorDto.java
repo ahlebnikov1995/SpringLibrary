@@ -16,7 +16,7 @@ public class AuthorDto {
     private String name;
 
     public Author toDomain(){
-       return new Author(id, name);
+       return Author.builder().id(id).name(name).build();
     }
 
     public static AuthorDto toDto(Author author){

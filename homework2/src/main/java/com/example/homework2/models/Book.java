@@ -24,15 +24,15 @@ public class Book {
     @Column(nullable = false)
     public String name;
 
-    @ManyToOne(targetEntity = Author.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(targetEntity = Genre.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Genre.class,cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(targetEntity = Comments.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Comments.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private List<Comments> comments;
 }

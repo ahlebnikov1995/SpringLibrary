@@ -9,5 +9,9 @@ import java.util.List;
 @Repository
 public interface DaoAuthor extends JpaRepository<Author,Long> {
 
-   List<Author> findByName(String name);
+   Author findById(long id);
+
+   Author findByName(String name);
+
+
 }
